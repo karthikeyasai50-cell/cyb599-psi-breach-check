@@ -44,9 +44,21 @@ def poisson_interval(x: int):
             lo, hi = (mid, hi) if f(mid) > 0 else (lo, mid)
         return (lo + hi) / 2
 
+    # cdf is decreasing in lam, so f(lam) > 0 means lam is still too small.
     upper = solve(lambda lam: cdf(x, lam) - 0.025, 0.0, x + 50)
-    lower = 0.0 if x == 0 else solve(lambda lam: 0.975 - cdf(x - 1, lam), 0.0, x + 50)
+    lower = 0.0 if x == 0 else solve(lambda lam: cdf(x - 1, lam) - 0.975, 0.0, x + 50)
     return lower, upper
+
+
+def add_intervals(rows):
+    for r in rows:
+        lo, hi = poisson_interval(int(r["observed"]))
+        q = int(r["queried_items"])
+        r["observed_rate"] = int(r["observed"]) / q
+        r["expected_rate"] = float(r["expected"]) / q
+        r["ci95_low_rate"] = lo / q
+        r["ci95_high_rate"] = hi / q
+    return rows
 
 
 def fpr_a(name, N, total, rng):
@@ -87,7 +99,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["quick", "full"], default="full")
     ap.add_argument("--out", default="results/fpr.csv")
+    ap.add_argument("--recompute-intervals", action="store_true",
+                    help="only recompute the interval columns of an existing --out file")
     args = ap.parse_args()
+    if args.recompute_intervals:
+        rows = add_intervals(list(csv.DictReader(open(args.out))))
+        with open(args.out, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=list(rows[0]))
+            w.writeheader()
+            w.writerows(rows)
+        return
     rng = np.random.default_rng(99)
     full = args.mode == "full"
     total_a = 100_000 if full else 20_000
@@ -99,12 +120,7 @@ def main():
     t0 = time.perf_counter()
     rows.append(fpr_b(100_000 if full else 20_000, 8000, 5 if full else 2, 16, rng))
     print(rows[-1], f"{time.perf_counter() - t0:.0f}s", flush=True)
-    for r in rows:
-        lo, hi = poisson_interval(r["observed"])
-        r["observed_rate"] = r["observed"] / r["queried_items"]
-        r["expected_rate"] = r["expected"] / r["queried_items"]
-        r["ci95_low_rate"] = lo / r["queried_items"]
-        r["ci95_high_rate"] = hi / r["queried_items"]
+    add_intervals(rows)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w", newline="") as f:
