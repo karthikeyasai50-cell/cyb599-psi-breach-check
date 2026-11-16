@@ -134,10 +134,15 @@ def run(args):
             score(row, found, truth)
             row["peak_rss_mb"] = round(peak_rss_mb(), 1)
             rows.append(row)
+            note = ""
+            if not row["correct"]:
+                if row["false_neg"] == 0 and args.protocol == "A":
+                    # A filter with a nonzero false-positive rate may add rare extra items.
+                    note = f" ({row['false_pos']} false positive, allowed by eps)"
+                else:
+                    note = "  WARNING: missed matches"
             print(f"  k={k:<5} rep={rep} correct={row['correct']} total={row['total_s']:.3f}s "
-                  f"up={row['query_up_bytes']} down={row['query_down_bytes']}", flush=True)
-            if not row["correct"] and not (args.protocol == "A" and row["false_neg"] == 0):
-                print("  WARNING: wrong answer", flush=True)
+                  f"up={row['query_up_bytes']} down={row['query_down_bytes']}{note}", flush=True)
     return rows
 
 

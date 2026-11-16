@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Reproduce every result in the report.
 #
-#   ./run_all.sh quick   # about 5 minutes: tests + N up to 10^5
-#   ./run_all.sh full    # about 1 hour:   tests + N up to 10^7 (needs about 4 GB RAM)
+#   ./run_all.sh quick   # about 2 minutes: tests + N up to 10^5
+#   ./run_all.sh full    # about 30 min:   tests + N up to 10^7 (needs about 4 GB RAM)
 #
 # Run from the repository root inside the virtual environment described in README.md.
 set -euo pipefail

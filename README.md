@@ -26,15 +26,22 @@ cd cyb599-psi-breach-check
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-./run_all.sh quick        # about 3 minutes
+./run_all.sh quick        # about 2 minutes
 ```
 
 `./run_all.sh quick` runs the 38 correctness tests, benchmarks every protocol at
 N = 10^4 and 10^5, runs the false-positive experiments, and writes results and
-figures to `results/`.
+figures to `results/`. It took 2 minutes on the 2-core machine in
+`results/environment.txt`, starting from a fresh clone and virtual environment.
+
+Every benchmark query is checked against a planted ground truth and logged as
+`correct=1` when the answer is exactly the intersection. Set A4 is configured
+for a false-positive rate of 10^-4 per item, so it may occasionally report one
+extra item; the log marks that case as "allowed by eps". A missed match is
+never expected and is logged as a warning.
 
 `./run_all.sh full` reproduces every number in the report: N up to 10^6 for
-all parameter sets and 10^7 for the design-point sets. It takes about one hour
+all parameter sets and 10^7 for the design-point sets. It takes about 30 minutes
 on 2 cores and needs about 4 GB of RAM. The results committed in `results/`
 come from one full run; `results/environment.txt` records the machine.
 
