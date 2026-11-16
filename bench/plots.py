@@ -101,7 +101,8 @@ def fig_bytes_vs_n(summary):
     ax.set(xscale="log", yscale="log", xlabel="Server set size N",
            ylabel="Bytes transferred (MB)")
     ax.grid(True, which="both", alpha=0.25)
-    ax.legend(fontsize=7, loc="lower right", ncol=1)
+    ax.legend(fontsize=7, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2, frameon=False)
+    fig.set_size_inches(6.4, 4.4)
     fig.tight_layout()
     fig.savefig(RES / "fig_bytes_vs_n.png", dpi=200)
 
@@ -120,7 +121,8 @@ def fig_time_vs_k(summary):
     ax.set(xscale="log", yscale="log", xlabel=f"Client set size k (N = {N:,})",
            ylabel="Online query time (s)")
     ax.grid(True, which="both", alpha=0.25)
-    ax.legend(fontsize=7.5)
+    ax.legend(fontsize=7.5, loc="upper center", bbox_to_anchor=(0.5, -0.22), ncol=2, frameon=False)
+    fig.set_size_inches(6.4, 3.7)
     fig.tight_layout()
     fig.savefig(RES / "fig_time_vs_k.png", dpi=200)
 
