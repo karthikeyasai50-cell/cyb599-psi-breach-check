@@ -1,0 +1,5 @@
+numpy==2.5.5
+Pyfhel==3.5.0
+openmined_psi==2.0.6
+pytest==8.4.2
+matplotlib==3.10.7
