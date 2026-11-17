@@ -1,6 +1,6 @@
 # Private Breach Check with Private Set Intersection
 
-CYB 599 Graduate Project, Part 3 (Implementation and Evaluation)
+**CYB 599 Graduate Project, Part 3 (Implementation and Evaluation)**  
 Karthikeya Krishna Sai Nanduri, Fall 2026
 
 A client holding k credential hashes learns which of them appear in a server's
