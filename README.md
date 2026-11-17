@@ -17,15 +17,41 @@ them with two baselines:
 
 ## Quick start
 
-Tested on Linux x86_64 with Python 3.13. Python 3.10 to 3.13 should work
-wherever wheels for Pyfhel and openmined_psi exist.
+**Requirements**
+
+* Linux x86_64 with glibc 2.35 or newer (Ubuntu 22.04 or later). Ubuntu 24.04
+  is recommended. Tested on Ubuntu 24.04 with Python 3.13.
+* Python 3.12 or 3.13 (the pinned NumPy has no wheels for older versions).
+* A C++ compiler and Python headers. Pyfhel is published only as source, so
+  `pip` compiles it and Microsoft SEAL on first install (about 5 to 10 minutes,
+  about 2 GB of RAM).
+* Windows: neither Pyfhel nor openmined_psi publishes Windows builds. Use WSL
+  (Ubuntu), a Linux virtual machine, or GitHub Codespaces.
+
+On Ubuntu 24.04:
 
 ```bash
-git clone <this repository> cyb599-psi-breach-check
+sudo apt update
+sudo apt install -y git build-essential python3-dev python3-venv
+```
+
+On Ubuntu 22.04, whose default Python is 3.10, install Python 3.12 first and
+use `python3.12` instead of `python3` below:
+
+```bash
+sudo add-apt-repository -y ppa:deadsnakes/ppa
+sudo apt install -y git build-essential python3.12 python3.12-dev python3.12-venv
+```
+
+Then:
+
+```bash
+git clone https://github.com/karthikeyasai50-cell/cyb599-psi-breach-check
 cd cyb599-psi-breach-check
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install --upgrade pip
+pip install -r requirements.txt   # compiles Pyfhel: 5 to 10 minutes
 ./run_all.sh quick        # about 2 minutes
 ```
 
