@@ -17,6 +17,19 @@ them with two baselines:
 
 ## Quick start
 
+**Fastest way on Ubuntu (22.04 or later, including WSL and virtual machines)**
+
+```bash
+sudo apt install -y git
+git clone https://github.com/karthikeyasai50-cell/cyb599-psi-breach-check
+bash cyb599-psi-breach-check/setup_ubuntu.sh
+```
+
+`setup_ubuntu.sh` installs the system packages, finds Python 3.12 or 3.13
+(installing 3.13 with `uv` if the system has a different version), creates
+`.venv`, installs the requirements and runs the quick reproduction into
+`my_results/`. The manual steps it performs are below.
+
 **Requirements**
 
 * Linux x86_64 with glibc 2.35 or newer (Ubuntu 22.04 or later). Ubuntu 24.04
@@ -96,6 +109,7 @@ psi/
   modarith.py     vectorized arithmetic mod a 39-bit prime, polynomials from roots
   baselines.py    plain lookup and k-anonymity range query
 tests/            pytest suite (38 tests)
+setup_ubuntu.sh   one-step setup and quick run on Ubuntu
 bench/
   run_bench.py    benchmark one configuration, append rows to a CSV
   fpr.py          false-positive experiments
